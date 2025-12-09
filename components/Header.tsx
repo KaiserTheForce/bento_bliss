@@ -1,12 +1,15 @@
 // components/Header.tsx
+"use client"
 import Link from "next/link";
 import Image from "next/image";
+import { useState } from "react";
 
 export default function Header() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <header className="sticky top-0 z-40 w-full backdrop-blur supports-[backdrop-filter]:bg-white/60 bg-white/80 border-b border-rose-100">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
-        {/* Logo + nom bien visible */}
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/media/logo.png"
@@ -20,12 +23,13 @@ export default function Header() {
             <span className="block text-lg font-extrabold tracking-tight text-stone-900">
               Bento Bliss
             </span>
-            <span className="block -mt-1 text-[11px] text-stone-500">Essonne (91)</span>
+            <span className="block -mt-1 text-[11px] text-stone-500">
+              Essonne (91)
+            </span>
           </div>
         </Link>
 
-        {/* Nav */}
-        <nav className="flex items-center gap-6 text-sm">
+        <nav className="hidden md:flex items-center gap-6 text-sm">
           <Link href="/galerie" className="text-stone-700 hover:text-stone-900">
             Galerie
           </Link>
@@ -39,8 +43,43 @@ export default function Header() {
             Commander
           </Link>
         </nav>
+
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="md:hidden p-2 rounded-lg hover:bg-stone-100"
+          aria-label="Menu"
+        >
+          {isOpen ? <span>X</span> : <span>Menu</span>}
+        </button>
       </div>
+
+      {isOpen && (
+        <div className="md:hidden border-t border-rose-100 bg-white/95 backdrop-blur">
+          <nav className="flex flex-col p-4 gap-4 text-sm">
+            <Link
+              href="/galerie"
+              className="text-stone-700 hover:text-stone-900"
+              onClick={() => setIsOpen(false)}
+            >
+              Galerie
+            </Link>
+            <Link
+              href="/faq"
+              className="text-stone-700 hover:text-stone-900"
+              onClick={() => setIsOpen(false)}
+            >
+              FAQ
+            </Link>
+            <Link
+              href="/commander"
+              className="rounded-xl bg-rose-500 px-3 py-2 font-medium text-white shadow hover:bg-rose-600 text-center"
+              onClick={() => setIsOpen(false)}
+            >
+              Commander
+            </Link>
+          </nav>
+        </div>
+      )}
     </header>
   );
 }
-  
